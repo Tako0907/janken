@@ -39,9 +39,9 @@ namespace Janken
 
         enum Face
         {
-            Win_img,   /* 勝利時の顔 */
+            Win_img,    /* 勝利時の顔 */
             Lose_img,   /* 敗北時の顔 */
-            Drow_img    /* 引き分け時の顔 */
+            Draw_img    /* 引き分け時の顔 */
         }
 
         enum JudgeResult
@@ -111,7 +111,6 @@ namespace Janken
                 {
                     gmprogstat = GameProgressStatus.GamePlay;
                     InitGamePlay();     // ゲームプレイ画面のリソース準備
-                    JudgeFace();        // ゲーム結果の画像のリソース準備
                     EndStartScreen();   // スタート画面のリソース開放
                 }
 
@@ -274,7 +273,7 @@ namespace Janken
 
                                 break;
                             case JudgeResult.DRAW:
-                                DX.DrawRotaGraph(390, 150, 0.34, 0, gamePlay_FaceImg[(int)Face.Drow_img], DX.TRUE);
+                                DX.DrawRotaGraph(390, 150, 0.34, 0, gamePlay_FaceImg[(int)Face.Draw_img], DX.TRUE);
                                 DX.DrawString(CalcCenterX("引き分け"), 288, "引き分け", DX.GetColor(50, 255, 50));
 
                                 if (frameCounter <= 61) //引き分け数の増加
@@ -391,16 +390,10 @@ namespace Janken
             gamePlay_HandImg[(int)Hand.Goo] = DX.LoadGraph("img/gamePlay_HandGoo.png");                     // グーの画像の読み込み
             gamePlay_HandImg[(int)Hand.Scissors] = DX.LoadGraph("img/gamePlay_HandScissors.png");           // チョキの画像の読み込み
             gamePlay_HandImg[(int)Hand.Per] = DX.LoadGraph("img/gamePlay_HandPer.png");                     // パーの画像の読み込み
-        }
 
-        /// <summary>
-        /// ゲーム結果で使用する画像
-        /// </summary>
-        public void JudgeFace()
-        {
-            gamePlay_FaceImg[(int)Face.Lose_img] = DX.LoadGraph("img/Lose.png");
-            gamePlay_FaceImg[(int)Face.Win_img] = DX.LoadGraph("img/ex.png");
-            gamePlay_FaceImg[(int)Face.Drow_img] = DX.LoadGraph("img/drow.png");
+            gamePlay_FaceImg[(int)Face.Win_img] = DX.LoadGraph("img/result_win.png");                       // ゲームの結果表示の画像（勝ち）
+            gamePlay_FaceImg[(int)Face.Lose_img] = DX.LoadGraph("img/result_lose.png");                     // ゲームの結果表示の画像（負け）
+            gamePlay_FaceImg[(int)Face.Draw_img] = DX.LoadGraph("img/result_draw.png");                     // ゲームの結果表示の画像（引き分け）
         }
 
         /// <summary>
@@ -411,6 +404,10 @@ namespace Janken
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Goo]);           // リソースの解放
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Scissors]);      // リソースの解放
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Per]);           // リソースの解放
+
+            DX.DeleteGraph(gamePlay_FaceImg[(int)Face.Win_img]);       // リソースの解放
+            DX.DeleteGraph(gamePlay_FaceImg[(int)Face.Lose_img]);      // リソースの解放
+            DX.DeleteGraph(gamePlay_FaceImg[(int)Face.Draw_img]);      // リソースの解放
         }
 
         /// <summary>
@@ -421,6 +418,10 @@ namespace Janken
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Goo]);           // リソースの解放
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Scissors]);      // リソースの解放
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Per]);           // リソースの解放
+
+            DX.DeleteGraph(gamePlay_FaceImg[(int)Face.Win_img]);       // リソースの解放
+            DX.DeleteGraph(gamePlay_FaceImg[(int)Face.Lose_img]);      // リソースの解放
+            DX.DeleteGraph(gamePlay_FaceImg[(int)Face.Draw_img]);      // リソースの解放
         }
 
         #endregion
@@ -439,8 +440,6 @@ namespace Janken
             int strWidth;
 
             DX.GetWindowSize(out x2, out y);
-
-
             strWidth = DX.GetDrawStringWidth(str, Encoding.GetEncoding("Shift_JIS").GetByteCount(str));
 
             return (int)((x1 + ((x2 - x1) / 2)) - (strWidth / 2));
