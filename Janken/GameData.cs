@@ -135,7 +135,7 @@ namespace Janken
             }
 
             int x = CalcCenterX("-> ゲームスタート") - DX.GetFontSize(), y = 360;                       // 文字の表示位置
-            uint selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
+            int selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
 
             /* タイトル */
             DX.SetFontSize(36);
@@ -329,7 +329,7 @@ namespace Janken
                         }
 
                         int x = CalcCenterX("もう一度") - DX.GetFontSize(), y = 360;                                // 文字の表示位置
-                        uint selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
+                        int selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
 
                         DX.DrawString(CalcCenterX("0勝0敗0分"), 235, win + "勝" + lose + "敗" + draw + "分", DX.GetColor(255, 255, 255));   //勝敗の表示
 
