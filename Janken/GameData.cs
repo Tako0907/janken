@@ -56,9 +56,6 @@ namespace Janken
         int draw = 0;    /* あいこ */
         int convictory = 0; /* 連勝 */
         int lostreak = 0;  /* 連敗 */
-        int judgwin = 0; /* 勝ち判定用 */
-        int judglose = 0; /* 負け判定用 */
-        int judgdraw = 0; /* あいこ判定用 */
         int judgconvictory = 0; /* 連勝判定用 */
         int judglost = 0;  /* 連敗判定用 */
         #endregion
@@ -189,10 +186,6 @@ namespace Janken
                         DX.SetFontSize(16);
                         frameCounter++;
 
-                        /* 判定用変数の初期化 */
-                        judgdraw = 0;
-                        judgwin = 0;
-                        judglose = 0;
                     }
                     else if (frameCounter <= 180) // 180フレーム以下（2秒間）
                     {
@@ -270,6 +263,10 @@ namespace Janken
                             case JudgeResult.WIN:
                                 DX.DrawRotaGraph(390, 150, 0.34, 0, gamePlay_FaceImg[(int)Face.Win_img], DX.TRUE);
                                 DX.DrawString(CalcCenterX("あなたの勝ち！！"), 288, "あなたの勝ち！！", DX.GetColor(255, 50, 50));
+
+                                if (frameCounter <= 61) // プレイヤーの勝利数の増加
+                                    win++;
+
                                 /* 連敗と連勝判定の初期化 */
                                 lostreak = 0;
                                 judglost = 0;
@@ -278,6 +275,10 @@ namespace Janken
                             case JudgeResult.DRAW:
                                 DX.DrawRotaGraph(390, 150, 0.34, 0, gamePlay_FaceImg[(int)Face.Drow_img], DX.TRUE);
                                 DX.DrawString(CalcCenterX("引き分け"), 288, "引き分け", DX.GetColor(50, 255, 50));
+
+                                if (frameCounter <= 61) //引き分け数の増加
+                                    draw++;
+
                                 /* 連勝と連敗と判定の初期化 */
                                 convictory = 0;
                                 judgconvictory = 0;
@@ -287,6 +288,10 @@ namespace Janken
                             case JudgeResult.LOSE:
                                 DX.DrawRotaGraph(390, 150, 0.34, 0, gamePlay_FaceImg[(int)Face.Lose_img], DX.TRUE);
                                 DX.DrawString(CalcCenterX("あなたの負け・・"), 288, "あなたの負け・・", DX.GetColor(50, 50, 255));
+
+                                if (frameCounter <= 61) // プレイヤーの敗北数の増加
+                                    lose++;
+
                                 /* 連勝と連敗判定の初期化 */
                                 convictory = 0;
                                 judgconvictory = 0;
@@ -455,20 +460,14 @@ namespace Janken
             switch (j)
             {
                 case 0:
-                    judgdraw++;
-                    if (judgdraw >= 60) { draw++; }
                     return JudgeResult.DRAW;
                 case 2:
-                    judgwin++;
-                    if (judgwin >= 60) { win++; }
                     /* 連勝時 */
                     convictory++;
                     if (convictory >= 60) { judgconvictory++; }
 
                     return JudgeResult.WIN;
                 default:
-                    judglose++;
-                    if (judglose >= 60){lose++;}
                     /* 連敗時 */
                     lostreak++;
                     if (lostreak >= 60) { judglost++; }
