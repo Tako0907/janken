@@ -132,10 +132,10 @@ namespace Janken
             int x = CalcCenterX("-> ゲームスタート") - DX.GetFontSize(), y = 360;                       // 文字の表示位置
             int selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
 
-            /* タイトル */
+
+            /* タイトル表示 */
             DX.SetFontSize(36);
             DX.DrawString(CalcCenterX("☆じゃんけんゲーム☆"), 235, "☆じゃんけんゲーム☆", DX.GetColor(255, 153, 0));
-
             DX.SetFontSize(16);
 
 
@@ -167,7 +167,6 @@ namespace Janken
                 case GamePlayStatus.Prog01: // ゲームプレイ第1場面
                     if (frameCounter <= 60) // 60フレーム以下（2秒間）
                     {
-
                         DX.SetFontSize(24); // 文字のサイズの変更
                         DX.DrawString(CalcCenterX("ゲームを開始します"), 288, "ゲームを開始します", DX.GetColor(200, 200, 200));
 
@@ -211,7 +210,6 @@ namespace Janken
                     if (losingStreak > 1)
                         DX.DrawString(700, 0, losingStreak + "連敗", DX.GetColor(0, 153, 255));   //連敗の表示
 
-
                     DX.DrawRotaGraph(400, 100, 0.34, Math.PI, gamePlay_HandImg[(int)Hand.Goo], DX.TRUE);   // 相手の手の画像を表示
 
                     DX.DrawRotaGraph(100, 500, 0.34, 0, gamePlay_HandImg[(int)Hand.Goo], DX.TRUE);        // 手の画像を表示　グー
@@ -222,20 +220,20 @@ namespace Janken
                     if (key[DX.KEY_INPUT_0] == 1)   // グーを選択
                     {
                         playerHand = 0; // 自分の手を格納
-                        enemyHand = (Hand)DX.GetRand(2);      // 敵の手を決定
+                        enemyHand = (Hand)DX.GetRand(2);     // 敵の手を決定
                         gmplaystat = GamePlayStatus.Prog02;  // 次の場面へ行くためのフラグセット
                     }
                     else if (key[DX.KEY_INPUT_1] == 1)  // チョキを選択
                     {
                         playerHand = (Hand)1;
                         enemyHand = (Hand)DX.GetRand(2);      // 敵の手を決定
-                        gmplaystat = GamePlayStatus.Prog02;
+                        gmplaystat = GamePlayStatus.Prog02;   // 次の場面へ行くためのフラグセット
                     }
                     else if (key[DX.KEY_INPUT_2] == 1)  // パーを選択
                     {
                         playerHand = (Hand)2;
                         enemyHand = (Hand)DX.GetRand(2);      // 敵の手を決定
-                        gmplaystat = GamePlayStatus.Prog02;
+                        gmplaystat = GamePlayStatus.Prog02;   // 次の場面へ行くためのフラグセット
                     }
 
                     DX.SetFontSize(16);
