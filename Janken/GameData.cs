@@ -162,6 +162,11 @@ namespace Janken
         /// <returns>正常終了時: 0。それ以外: -1</returns>
         public int GamePlay(byte[] key)
         {
+            if (winningStreak > 1)
+                DX.DrawString(700, 0, winningStreak + "連勝", DX.GetColor(255, 51, 0));   //連勝の表示
+            if (losingStreak > 1)
+                DX.DrawString(700, 0, losingStreak + "連敗", DX.GetColor(0, 153, 255));   //連敗の表示
+
             switch (gmplaystat)
             {
                 case GamePlayStatus.Prog01: // ゲームプレイ第1場面
@@ -182,7 +187,6 @@ namespace Janken
 
                         DX.SetFontSize(16);
                         frameCounter++;
-
                     }
                     else if (frameCounter <= 180) // 180フレーム以下（2秒間）
                     {
@@ -204,11 +208,6 @@ namespace Janken
                     DX.SetFontSize(24);
                     DX.DrawString(CalcCenterX("手を選んでください！"), 264, "手を選んでください！", DX.GetColor(200, 200, 200));
                     DX.DrawString(CalcCenterX("グー…0　チョキ…1　パー…2"), 288, "グー…0　チョキ…1　パー…2", DX.GetColor(255, 100, 100));
-
-                    if (winningStreak > 1)
-                        DX.DrawString(700, 0, winningStreak + "連勝", DX.GetColor(255, 51, 0));   //連勝の表示
-                    if (losingStreak > 1)
-                        DX.DrawString(700, 0, losingStreak + "連敗", DX.GetColor(0, 153, 255));   //連敗の表示
 
                     DX.DrawRotaGraph(400, 100, 0.34, Math.PI, gamePlay_HandImg[(int)Hand.Goo], DX.TRUE);   // 相手の手の画像を表示
 
