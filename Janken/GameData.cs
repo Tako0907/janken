@@ -135,7 +135,7 @@ namespace Janken
             }
 
             int x = CalcCenterX("-> ゲームスタート") - DX.GetFontSize(), y = 360;                       // 文字の表示位置
-            uint selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
+            int selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
 
             /* タイトル */
             DX.SetFontSize(36);
@@ -270,6 +270,10 @@ namespace Janken
                             case JudgeResult.WIN:
                                 DX.DrawRotaGraph(390, 150, 0.34, 0, gamePlay_FaceImg[(int)Face.Win_img], DX.TRUE);
                                 DX.DrawString(CalcCenterX("あなたの勝ち！！"), 288, "あなたの勝ち！！", DX.GetColor(255, 50, 50));
+
+                                if (frameCounter <= 61) // プレイヤーの勝利数の増加
+                                    win++;
+
                                 /* 連敗と連勝判定の初期化 */
                                 lostreak = 0;
                                 judglost = 0;
@@ -287,6 +291,10 @@ namespace Janken
                             case JudgeResult.LOSE:
                                 DX.DrawRotaGraph(390, 150, 0.34, 0, gamePlay_FaceImg[(int)Face.Lose_img], DX.TRUE);
                                 DX.DrawString(CalcCenterX("あなたの負け・・"), 288, "あなたの負け・・", DX.GetColor(50, 50, 255));
+
+                                if (frameCounter <= 61) // プレイヤーの敗北数の増加
+                                    lose++;
+
                                 /* 連勝と連敗判定の初期化 */
                                 convictory = 0;
                                 judgconvictory = 0;
@@ -329,7 +337,7 @@ namespace Janken
                         }
 
                         int x = CalcCenterX("もう一度") - DX.GetFontSize(), y = 360;                                // 文字の表示位置
-                        uint selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
+                        int selectColor = DX.GetColor(255, 100, 100), menuColor = DX.GetColor(255, 255, 255);       // メニューの文字カラー
 
                         DX.DrawString(CalcCenterX("0勝0敗0分"), 235, win + "勝" + lose + "敗" + draw + "分", DX.GetColor(255, 255, 255));   //勝敗の表示
 
@@ -459,16 +467,12 @@ namespace Janken
                     if (judgdraw >= 60) { draw++; }
                     return JudgeResult.DRAW;
                 case 2:
-                    judgwin++;
-                    if (judgwin >= 60) { win++; }
                     /* 連勝時 */
                     convictory++;
                     if (convictory >= 60) { judgconvictory++; }
 
                     return JudgeResult.WIN;
                 default:
-                    judglose++;
-                    if (judglose >= 60){lose++;}
                     /* 連敗時 */
                     lostreak++;
                     if (lostreak >= 60) { judglost++; }
