@@ -67,6 +67,8 @@ namespace Janken
 
         #endregion
 
+        private int backImg = -1;   /* 背景画像 */
+
         private int selectMenuId = 0;               /* 選択されたメニュー用変数 */
         private bool isPressKey = false;            /* 前のフレームでキーボードを押していたか */
 
@@ -411,6 +413,8 @@ namespace Janken
         /// </summary>
         ~GameData()
         {
+            DX.DeleteGraph(backImg);    // リソースの解放
+
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Goo]);           // リソースの解放
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Scissors]);      // リソースの解放
             DX.DeleteGraph(gamePlay_HandImg[(int)Hand.Per]);           // リソースの解放
@@ -469,6 +473,7 @@ namespace Janken
         {
             gmprogstat = GameProgressStatus.StartScreen;
             gmplaystat = GamePlayStatus.Prog01;
+            backImg = DX.LoadGraph("img/back_img.png");
             InitStartScreen();      // スタート画面のリソース準備
         }
     }
